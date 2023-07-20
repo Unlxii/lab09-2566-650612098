@@ -23,6 +23,7 @@ export default function Home() {
   const deleteTask = (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setCont1(count1 - 1);
+    setCont2(count2 - 1);
     setTasks(newTasks);
   };
 

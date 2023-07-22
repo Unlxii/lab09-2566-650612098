@@ -10,38 +10,38 @@ import { useState } from "react";
 export default function Home() {
   //tasks = array of {id: string, title: string, completed: boolean}
   const [tasks, setTasks] = useState([]);
-  const [count1, setCont1] = useState(0);
-  const [count2, setCont2] = useState(0);
+  const [count1, setCount1] = useState(0);
+  const [count2, setCount2] = useState(0);
 
   const addTask = (newTaskTitle) => {
     const newTask = { id: nanoid(), title: newTaskTitle, completed: false };
     const newTasks = [...tasks, newTask];
-    setCont1(count1 + 1);
+    setCount1(count1 + 1);
     setTasks(newTasks);
   };
 
   const deleteTask = (taskId) => {
-    if (count2 > 0) {
-      setCont2(math.max(count2 - 1, 0));
+    const taskToDelete = tasks.find((task) => task.id === taskId);
+    if (taskToDelete && taskToDelete.completed) {
+      setCount2(Math.max(count2 - 1, 0));
     }
-    const newTasks = tasks.filter((task) => task.id !== taskId);
-    setCont1(count1 - 1);
 
+    const newTasks = tasks.filter((task) => task.id !== taskId);
+    setCount1(count1 - 1);
     setTasks(newTasks);
   };
 
   const toggleDoneTask = (taskId) => {
-    //structuredClone will copy an array or an object "deeply"
-    //So objects within an object will be copied too
     const newTasks = structuredClone(tasks);
-    //search for a task based on condition
     const task = newTasks.find((x) => x.id === taskId);
+    const isTaskCompleted = task.completed;
     task.completed = !task.completed;
     setTasks(newTasks);
-    if (task.completed) {
-      setCont2(count2 + 1);
-    } else {
-      setCont2(count2 - 1);
+
+    if (task.completed && !isTaskCompleted) {
+      setCount2(count2 + 1);
+    } else if (!task.completed && isTaskCompleted) {
+      setCount2(Math.max(count2 - 1, 0));
     }
   };
 
